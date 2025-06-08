@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    city: City;
+    'run-club': RunClub;
+    run: Run;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +80,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    city: CitySelect<false> | CitySelect<true>;
+    'run-club': RunClubSelect<false> | RunClubSelect<true>;
+    run: RunSelect<false> | RunSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -151,6 +157,57 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "city".
+ */
+export interface City {
+  id: string;
+  name: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "run-club".
+ */
+export interface RunClub {
+  id: string;
+  name: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  city: string | City;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "run".
+ */
+export interface Run {
+  id: string;
+  title: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  type: 'road' | 'trail';
+  date: string;
+  city: string | City;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  location?: [number, number] | null;
+  'start address'?: string | null;
+  distance?: string | null;
+  maxParticipants: number;
+  membersOnly?: boolean | null;
+  organizer?: (string | null) | RunClub;
+  price?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -163,6 +220,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'city';
+        value: string | City;
+      } | null)
+    | ({
+        relationTo: 'run-club';
+        value: string | RunClub;
+      } | null)
+    | ({
+        relationTo: 'run';
+        value: string | Run;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,6 +307,50 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "city_select".
+ */
+export interface CitySelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "run-club_select".
+ */
+export interface RunClubSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  image?: T;
+  city?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "run_select".
+ */
+export interface RunSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
+  type?: T;
+  date?: T;
+  city?: T;
+  location?: T;
+  'start address'?: T;
+  distance?: T;
+  maxParticipants?: T;
+  membersOnly?: T;
+  organizer?: T;
+  price?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

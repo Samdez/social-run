@@ -6,9 +6,16 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+// import { s3Storage } from '@payloadcms/'
+import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
+import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
+import { Agent } from 'https'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { City } from './collections/City'
+import { RunClub } from './collections/RunClub'
+import { Run } from './collections/Run'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, City, RunClub, Run],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -32,6 +39,27 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    cloudStorage({
+      collections: {
+        media: {
+          adapter: s3Adapter({
+            config: {
+              endpoint: process.env.S3_ENDPOINT!,
+              forcePathStyle: true,
+              requestHandler: {
+                httpsAgent: new Agent({
+                  rejectUnauthorized: false,
+                }),
+              },
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY!,
+                secretAccessKey: process.env.S3_SECRET_KEY!,
+              },
+            },
+            bucket: process.env.S3_BUCKET!,
+          }),
+        },
+      },
+    }),
   ],
 })
