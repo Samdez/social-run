@@ -199,7 +199,7 @@ export interface Run {
    */
   location?: [number, number] | null;
   'start address'?: string | null;
-  distance?: string | null;
+  distance?: number | null;
   maxParticipants: number;
   membersOnly?: boolean | null;
   organizer?: (string | null) | RunClub;

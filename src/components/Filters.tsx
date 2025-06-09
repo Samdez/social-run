@@ -90,11 +90,11 @@ export function Filters({ cities }: { cities: City[] }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleSearch({ distance: '5k' })}>
-            {'< 5 km'}
+          <DropdownMenuItem onClick={() => handleSearch({ distance: '5' })}>
+            {'<= 5 km'}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleSearch({ distance: '10k' })}>
-            {'< 10 km'}
+          <DropdownMenuItem onClick={() => handleSearch({ distance: '10' })}>
+            {'<= 10 km'}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSearch({ distance: 'all' })}>
             {'Toutes distances'}

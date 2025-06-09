@@ -45,7 +45,7 @@ export const Run: CollectionConfig = {
     },
     {
       name: 'distance',
-      type: 'text',
+      type: 'number',
     },
     {
       name: 'maxParticipants',
