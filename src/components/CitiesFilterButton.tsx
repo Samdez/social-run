@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/command'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useMediaQuery } from '@/app/(frontend)/hooks/use-media-query'
+import { useMediaQuery } from '@/app/(frontend)/(hooks)/use-media-query'
 import { City } from '@/payload-types'
 import { ChevronDown } from 'lucide-react'
 import { ReadonlyURLSearchParams } from 'next/navigation'

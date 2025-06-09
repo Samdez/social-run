@@ -14,7 +14,7 @@ export async function getRuns({
   endDate: Date | null
   citySlug: string | null
   distance: Run['distance']
-  type: Run['type']
+  type: Run['type'] | 'all'
 }) {
   const endDatePlusOne = endDate && new Date(endDate.setDate(endDate.getDate() + 1))
   const events = await payload.find({

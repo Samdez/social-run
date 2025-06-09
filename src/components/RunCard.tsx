@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, Users, Clock } from 'lucide-react'
 import { Run } from '@/payload-types'
 import { useRouter } from 'next/navigation'
+import { formatDateToFR, getRunInfo } from '@/app/utils'
+import { typeColors, typeLabels } from '@/app/constants'
 
 interface RunCardProps {
   run: Run
@@ -15,19 +17,7 @@ interface RunCardProps {
 export function RunCard({ run }: RunCardProps) {
   const router = useRouter()
 
-  const typeColors = {
-    road: 'bg-orange-500',
-    trail: 'bg-green-500',
-  }
-
-  const typeLabels = {
-    road: 'ROUTE',
-    trail: 'TRAIL',
-  }
-  const imageUrl = typeof run.image === 'string' ? run.image : run.image?.url
-  const imageAlt = typeof run.image === 'string' ? run.image : run.image?.alt
-  const cityName = typeof run.city === 'string' ? run.city : run.city?.name
-  const organizerName = typeof run.organizer === 'string' ? run.organizer : run.organizer?.name
+  const { imageUrl, imageAlt, cityName, organizerName } = getRunInfo(run)
 
   return (
     <Link href={`/runs/${run.id}`}>
@@ -53,13 +43,7 @@ export function RunCard({ run }: RunCardProps) {
         <CardContent className="p-4">
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
             <Calendar className="w-4 h-4" />
-            <span>
-              {new Date(run.date).toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-              })}
-            </span>
+            <span>{formatDateToFR(run.date)}</span>
           </div>
 
           <h3 className="font-bold text-lg mb-2 line-clamp-2">{run.title}</h3>
@@ -90,6 +74,9 @@ export function RunCard({ run }: RunCardProps) {
         </CardContent>
 
         <CardFooter className="p-4 pt-0 flex gap-2">
+          <Button variant="outline" className="flex-1">
+            Détails
+          </Button>
           <Button
             className="flex-1 bg-purple-600 hover:bg-purple-700"
             onClick={(e) => {
