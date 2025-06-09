@@ -3,12 +3,18 @@ import { getRuns } from './server/queries/get-events'
 import { getCities } from './server/queries/get-cities'
 import { Filters } from '@/components/Filters'
 
-async function Home({ searchParams }: { searchParams: { startDate: string; endDate: string } }) {
-  const { startDate, endDate } = await searchParams
+async function Home({
+  searchParams,
+}: {
+  searchParams: { startDate: string; endDate: string; city: string }
+}) {
+  const { startDate, endDate, city } = await searchParams
 
+  const citySlug = city === 'all' ? null : city
   const runs = await getRuns({
     startDate: startDate ? new Date(startDate) : null,
     endDate: endDate ? new Date(endDate) : null,
+    citySlug,
   })
   const cities = await getCities()
   return (
