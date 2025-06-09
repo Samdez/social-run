@@ -6,17 +6,19 @@ import { Filters } from '@/components/Filters'
 async function Home({
   searchParams,
 }: {
-  searchParams: { startDate: string; endDate: string; city: string; distance: string }
+  searchParams: { startDate: string; endDate: string; city: string; distance: string; type: string }
 }) {
-  const { startDate, endDate, city, distance } = await searchParams
+  const { startDate, endDate, city, distance, type } = await searchParams
 
   const citySlug = city === 'all' ? null : city
   const distanceNumber = distance === 'all' ? null : Number(distance)
+  const typeString = type === 'all' ? null : type
   const runs = await getRuns({
     startDate: startDate ? new Date(startDate) : null,
     endDate: endDate ? new Date(endDate) : null,
     citySlug,
     distance: distanceNumber,
+    type: typeString,
   })
   const cities = await getCities()
   return (

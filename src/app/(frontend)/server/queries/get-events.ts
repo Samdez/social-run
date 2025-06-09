@@ -1,5 +1,6 @@
 'use server'
 
+import { Run } from '@/payload-types'
 import { payload } from '../client'
 
 export async function getRuns({
@@ -7,13 +8,14 @@ export async function getRuns({
   endDate,
   citySlug,
   distance,
+  type,
 }: {
   startDate: Date | null
   endDate: Date | null
   citySlug: string | null
-  distance: number | null
+  distance: Run['distance']
+  type: Run['type']
 }) {
-  console.log('🚀 ~ distance:', distance)
   const endDatePlusOne = endDate && new Date(endDate.setDate(endDate.getDate() + 1))
   const events = await payload.find({
     collection: 'run',
@@ -25,6 +27,7 @@ export async function getRuns({
       },
       ...(citySlug && { ['city.slug']: { equals: citySlug } }),
       ...(distance && { distance: { less_than_equal: distance } }),
+      ...(type && { type: { equals: type } }),
     },
   })
   return events
