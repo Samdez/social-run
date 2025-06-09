@@ -91,10 +91,10 @@ export function Filters({ cities }: { cities: City[] }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem onClick={() => handleSearch({ distance: '5' })}>
-            {'<= 5 km'}
+            {'< 5 km'}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSearch({ distance: '10' })}>
-            {'<= 10 km'}
+            {'< 10 km'}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSearch({ distance: 'all' })}>
             {'Toutes distances'}
@@ -104,7 +104,7 @@ export function Filters({ cities }: { cities: City[] }) {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between min-w-[160px]">
+          <Button variant="outline" className="justify-between w-fit">
             Type
             <ChevronDown className="ml-2 h-4 w-4" />
           </Button>

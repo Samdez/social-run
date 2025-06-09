@@ -40,7 +40,7 @@ export function CitiesFilterButton({
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[160px] justify-between">
+          <Button variant="outline" className="w-fit justify-between">
             {selectedCity ? <>{selectedCity.name}</> : <>Ville</>}
             <ChevronDown className="ml-2 h-4 w-4" />
           </Button>
@@ -55,7 +55,7 @@ export function CitiesFilterButton({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[160px] justify-start">
+        <Button variant="outline" className="w-fit justify-start">
           {selectedCity ? <>{selectedCity.name}</> : <>Ville</>}
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>

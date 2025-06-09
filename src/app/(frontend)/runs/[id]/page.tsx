@@ -234,7 +234,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
 
             <div className="space-y-4">
               <Button
-                className="w-full bg-purple-600 hover:bg-purple-700 text-lg py-6"
+                className="w-fit bg-purple-600 hover:bg-purple-700 text-lg py-6"
                 // onClick={handleRegistration}
                 disabled={run.maxParticipants === run.maxParticipants}
               >
