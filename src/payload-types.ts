@@ -164,6 +164,7 @@ export interface City {
   name: string;
   description?: string | null;
   image?: (string | null) | Media;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -316,6 +317,7 @@ export interface CitySelect<T extends boolean = true> {
   name?: T;
   description?: T;
   image?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }

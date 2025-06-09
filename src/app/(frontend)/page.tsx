@@ -1,12 +1,15 @@
 import { RunCard } from '@/components/RunCard'
 import { getRuns } from './server/queries/get-events'
 import { getCities } from './server/queries/get-cities'
-import { CitiesFilterButton } from '@/components/CitiesFilterButton'
-import { useState } from 'react'
 import { Filters } from '@/components/Filters'
 
-async function Home() {
-  const runs = await getRuns()
+async function Home({ searchParams }: { searchParams: { startDate: string; endDate: string } }) {
+  const { startDate, endDate } = await searchParams
+
+  const runs = await getRuns({
+    startDate: startDate ? new Date(startDate) : null,
+    endDate: endDate ? new Date(endDate) : null,
+  })
   const cities = await getCities()
   return (
     <>

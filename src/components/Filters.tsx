@@ -7,138 +7,116 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ChevronDownIcon } from 'lucide-react'
 import { useState } from 'react'
 import { CitiesFilterButton } from './CitiesFilterButton'
 import { City } from '@/payload-types'
-
-// interface EventFiltersProps {
-//   filters: {
-//     date: string
-//     location: string
-//     type: string
-//     theme: string
-//     distance: string
-//     inviteOnly: boolean
-//   }
-//   handleFilterChange: (key: string, value: string | boolean) => void
-// }
+import { Calendar } from './ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export function Filters({ cities }: { cities: City[] }) {
-  const [filters, setFilters] = useState({
-    date: 'all',
-    location: 'all',
-    type: 'all',
-    theme: 'all',
-    distance: 'all',
-    inviteOnly: false,
-  })
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const { replace } = useRouter()
 
-  const handleFilterChange = (key: string, value: string | boolean) => {
-    setFilters((prev) => ({ ...prev, [key]: value }))
+  function handleSearch(terms: Record<string, string>) {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(terms).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+    replace(`${pathname}?${params.toString()}`)
   }
+
+  const [date, setDate] = useState<{ from: Date; to: Date }>({
+    from: new Date(),
+    to: new Date(),
+  })
+  const [open, setOpen] = useState(false)
+
   return (
     <div className="flex flex-wrap gap-4 mb-8">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between min-w-[100px]">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            id="date"
+            className="w-[120px] lg:w-[100px] justify-between font-normal"
+          >
             Date
-            <ChevronDown className="ml-2 h-4 w-4" />
+            <ChevronDownIcon />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleFilterChange('date', 'today')}>
-            Aujourd&apos;hui
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('date', 'week')}>
-            Cette semaine
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('date', 'month')}>
-            Ce mois
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('date', 'all')}>
-            Toutes les dates
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+          <Calendar
+            mode="range"
+            disabled={(date) => {
+              const yesterday = new Date()
+              yesterday.setDate(yesterday.getDate() - 1)
+              return date < yesterday
+            }}
+            selected={{
+              from: date.from || new Date(),
+              to: date.to,
+            }}
+            captionLayout="dropdown"
+            onSelect={(date) => {
+              if (date) {
+                setDate({
+                  from: date.from || new Date(),
+                  to: date.to || new Date(),
+                })
+                handleSearch({
+                  startDate: date.from?.toISOString() || '',
+                  endDate: date.to?.toISOString() || '',
+                })
+              }
+            }}
+          />
+        </PopoverContent>
+      </Popover>
 
-      <CitiesFilterButton cities={cities} />
+      <CitiesFilterButton cities={cities} handleSearch={handleSearch} searchParams={searchParams} />
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between min-w-[140px]">
-            Type de course
-            <ChevronDown className="ml-2 h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleFilterChange('type', 'road')}>
-            Route
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('type', 'trail')}>
-            Trail
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('type', 'all')}>
-            Tous les types
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between min-w-[120px]">
-            Thème
-            <ChevronDown className="ml-2 h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleFilterChange('theme', 'nature')}>
-            Nature
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('theme', 'city')}>
-            Ville
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('theme', 'charity')}>
-            Charité
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('theme', 'all')}>
-            Tous les thèmes
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between min-w-[120px]">
+          <Button variant="outline" className="justify-between w-[120px]">
             Distance
             <ChevronDown className="ml-2 h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleFilterChange('distance', '5k')}>
-            5 km
+          <DropdownMenuItem onClick={() => handleSearch({ distance: '5k' })}>
+            {'< 5 km'}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('distance', '10k')}>
-            10 km
+          <DropdownMenuItem onClick={() => handleSearch({ distance: '10k' })}>
+            {'< 10 km'}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('distance', '21k')}>
-            Semi-marathon
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('distance', '42k')}>
-            Marathon
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleFilterChange('distance', 'all')}>
-            Toutes les distances
+          <DropdownMenuItem onClick={() => handleSearch({ distance: 'all' })}>
+            {'Toutes distances'}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Button
-        variant={filters.inviteOnly ? 'default' : 'outline'}
-        onClick={() => handleFilterChange('inviteOnly', !filters.inviteOnly)}
-      >
-        Sur invitation uniquement
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="justify-between min-w-[160px]">
+            Type
+            <ChevronDown className="ml-2 h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => handleSearch({ type: 'road' })}>Route</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleSearch({ type: 'trail' })}>Trail</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleSearch({ type: 'all' })}>
+            Tous les types
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }
