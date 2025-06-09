@@ -2,19 +2,12 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 // import { useAuth } from '@/components/auth-provider'
-import { User, LogOut, Settings, Plus } from 'lucide-react'
+import { Logout } from './logout'
+import { authClient } from '@/lib/auth-client'
 
 export function Header() {
-  // const { user, logout } = useAuth()
+  const { data: session } = authClient.useSession()
 
   return (
     <header className="bg-white border-b border-gray-200">
@@ -45,15 +38,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            {/* {user ? (
+            {session ? (
               <>
-                <Button asChild variant="outline">
+                {/* <Button asChild variant="outline">
                   <Link href="/create-event">
                     <Plus className="w-4 h-4 mr-2" />
                     Créer un événement
                   </Link>
-                </Button>
-                <DropdownMenu>
+                </Button> */}
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
@@ -90,7 +83,8 @@ export function Header() {
                       Se déconnecter
                     </DropdownMenuItem>
                   </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
+                <Logout />
               </>
             ) : (
               <div className="flex space-x-2">
@@ -98,10 +92,10 @@ export function Header() {
                   <Link href="/login">Se connecter</Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/register">S'inscrire</Link>
+                  <Link href="/register">S&apos;inscrire</Link>
                 </Button>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </div>

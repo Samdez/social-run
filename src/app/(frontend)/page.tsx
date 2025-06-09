@@ -3,6 +3,8 @@ import { getRuns } from './(server)/queries/get-runs'
 import { getCities } from './(server)/queries/get-cities'
 import { Filters } from '@/components/Filters'
 import { Run } from '@/payload-types'
+import { authClient } from '@/lib/auth-client'
+import { headers } from 'next/headers'
 
 async function Home({
   searchParams,
@@ -16,7 +18,6 @@ async function Home({
   }
 }) {
   const { startDate, endDate, city, distance, type } = await searchParams
-
   const citySlug = city === 'all' ? null : city
   const distanceNumber = distance === 'all' ? null : Number(distance)
   const runs = await getRuns({
@@ -27,6 +28,7 @@ async function Home({
     type,
   })
   const cities = await getCities()
+
   return (
     <div className="container mx-auto px-4">
       <div className="text-center mb-12">

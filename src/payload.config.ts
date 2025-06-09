@@ -7,8 +7,8 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 // import { s3Storage } from '@payloadcms/'
-import { cloudStorage } from '@payloadcms/plugin-cloud-storage'
-import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { Agent } from 'https'
 
 import { Users } from './collections/Users'
@@ -39,26 +39,23 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
-    cloudStorage({
-      collections: {
-        media: {
-          adapter: s3Adapter({
-            config: {
-              endpoint: process.env.S3_ENDPOINT!,
-              forcePathStyle: true,
-              requestHandler: {
-                httpsAgent: new Agent({
-                  rejectUnauthorized: false,
-                }),
-              },
-              credentials: {
-                accessKeyId: process.env.S3_ACCESS_KEY!,
-                secretAccessKey: process.env.S3_SECRET_KEY!,
-              },
-            },
-            bucket: process.env.S3_BUCKET!,
+    s3Storage({
+      config: {
+        endpoint: process.env.S3_ENDPOINT!,
+        forcePathStyle: true,
+        requestHandler: {
+          httpsAgent: new Agent({
+            rejectUnauthorized: false,
           }),
         },
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY!,
+          secretAccessKey: process.env.S3_SECRET_KEY!,
+        },
+      },
+      bucket: process.env.S3_BUCKET!,
+      collections: {
+        media: true,
       },
     }),
   ],

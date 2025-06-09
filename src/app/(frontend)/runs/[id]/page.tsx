@@ -14,7 +14,6 @@ export default async function EventDetailPage({ params }: { params: { id: string
     docs: [run],
   } = await getRun(id)
   const { imageUrl, imageAlt, cityName, organizerName, organizerLogo } = getRunInfo(run)
-  // console.log('🚀 ~ EventDetailPage ~ organizerLogo:', organizerLogo)
   // const [event, setEvent] = useState<any>(null)
   // const [isLoading, setIsLoading] = useState(true)
   // const [showRegistrationModal, setShowRegistrationModal] = useState(false)

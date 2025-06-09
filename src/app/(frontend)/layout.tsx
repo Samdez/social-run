@@ -1,6 +1,7 @@
 import React from 'react'
 import './globals.css'
 import { Header } from '../../components/Header'
+import { Toaster } from '@/components/ui/sonner'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -18,6 +19,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
           <main className="max-w-full mx-auto py-8">
             {children}
+            <Toaster />
             {/* <div className="text-center mb-12">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
                 TOUTES LES COURSES
