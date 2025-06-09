@@ -53,7 +53,13 @@ export function RunCard({ run }: RunCardProps) {
         <CardContent className="p-4">
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
             <Calendar className="w-4 h-4" />
-            <span>{run.date}</span>
+            <span>
+              {new Date(run.date).toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
+            </span>
           </div>
 
           <h3 className="font-bold text-lg mb-2 line-clamp-2">{run.title}</h3>
