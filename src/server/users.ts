@@ -26,7 +26,7 @@ export const signIn = async (data: { email: string; password: string }) => {
 
 export const signUp = async (data: { email: string; password: string; username: string }) => {
   try {
-    await auth.api.signUpEmail({
+    const res = await auth.api.signUpEmail({
       body: {
         email: data.email,
         password: data.password,
@@ -36,6 +36,7 @@ export const signUp = async (data: { email: string; password: string; username: 
     return {
       success: true,
       message: 'Signed up successfully',
+      data: res.user,
     }
   } catch (error) {
     const e = error as Error

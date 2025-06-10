@@ -1,3 +1,4 @@
+import { createRun } from '@/db/queries/create-run'
 import type { CollectionConfig } from 'payload'
 
 export const Run: CollectionConfig = {
@@ -66,4 +67,13 @@ export const Run: CollectionConfig = {
       type: 'number',
     },
   ],
+  // hooks: {
+  //   afterChange: [
+  //     async ({ doc, operation, req }) => {
+  //       if (operation === 'create' || operation === 'update') {
+  //         await createRun(doc)
+  //       }
+  //     },
+  //   ],
+  // },
 }

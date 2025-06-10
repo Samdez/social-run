@@ -125,6 +125,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  authProviderId: string;
+  runs?: (string | Run)[] | null;
+  'run-clubs-member'?: (string | RunClub)[] | null;
+  'run-clubs-owner'?: (string | RunClub)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -135,6 +139,32 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "run".
+ */
+export interface Run {
+  id: string;
+  title: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  type: 'road' | 'trail';
+  date: string;
+  city: string | City;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  location?: [number, number] | null;
+  'start address'?: string | null;
+  distance?: number | null;
+  maxParticipants: number;
+  membersOnly?: boolean | null;
+  organizer?: (string | null) | RunClub;
+  price?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -178,32 +208,6 @@ export interface RunClub {
   description?: string | null;
   image?: (string | null) | Media;
   city: string | City;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "run".
- */
-export interface Run {
-  id: string;
-  title: string;
-  description?: string | null;
-  image?: (string | null) | Media;
-  type: 'road' | 'trail';
-  date: string;
-  city: string | City;
-  /**
-   * @minItems 2
-   * @maxItems 2
-   */
-  location?: [number, number] | null;
-  'start address'?: string | null;
-  distance?: number | null;
-  maxParticipants: number;
-  membersOnly?: boolean | null;
-  organizer?: (string | null) | RunClub;
-  price?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -281,6 +285,10 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  authProviderId?: T;
+  runs?: T;
+  'run-clubs-member'?: T;
+  'run-clubs-owner'?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

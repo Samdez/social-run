@@ -2,17 +2,15 @@
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { signIn, signUp } from '@/server/users'
+import { signUp } from '@/server/users'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,8 +18,9 @@ import {
 } from '@/components/ui/form'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Loader2 } from 'lucide-react'
+import { createUser } from '@/app/(frontend)/(server)/queries/create-user'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -29,21 +28,36 @@ const formSchema = z.object({
   username: z.string().min(3),
 })
 
+const defaultValues = {
+  email: '',
+  password: '',
+  username: '',
+}
+
 export function SignupForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues,
   })
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const { success, message } = await signUp(data)
-    if (success) {
+    const { success, message, data: user } = await signUp(data)
+    if (success && user) {
+      await createUser({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        authProviderId: user.id,
+      })
       toast.success('Successfully logged in')
       router.push('/')
       setIsLoading(false)
@@ -51,6 +65,23 @@ export function SignupForm({ className, ...props }: React.ComponentPropsWithoutR
       toast.error(typeof message === 'string' ? message : message.error)
       setIsLoading(false)
     }
+  }
+
+  if (!isMounted) {
+    return (
+      <div className={cn('flex flex-col gap-6', className)} {...props}>
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">Créer un compte gratuitement</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-center">
+              <Loader2 className="w-6 h-6 animate-spin" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (

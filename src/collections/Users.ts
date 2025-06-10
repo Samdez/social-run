@@ -7,7 +7,34 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    {
+      name: 'authProviderId',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'email',
+      type: 'email',
+      required: true,
+      unique: true,
+    },
+    {
+      name: 'runs',
+      type: 'relationship',
+      relationTo: 'run',
+      hasMany: true,
+    },
+    {
+      name: 'run-clubs-member',
+      type: 'relationship',
+      relationTo: 'run-club',
+      hasMany: true,
+    },
+    {
+      name: 'run-clubs-owner',
+      type: 'relationship',
+      relationTo: 'run-club',
+      hasMany: true,
+    },
   ],
 }
