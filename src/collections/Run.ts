@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Run: CollectionConfig = {
   slug: 'run',
+  admin: {
+    useAsTitle: 'title',
+  },
   fields: [
     {
       name: 'title',
@@ -70,6 +73,7 @@ export const Run: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       hasMany: true,
+      unique: true,
     },
   ],
 }

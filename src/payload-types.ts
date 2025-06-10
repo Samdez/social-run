@@ -76,7 +76,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    users: {
+      'runs-subscribed': 'run';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -126,7 +130,11 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   username: string;
-  runs?: (string | Run)[] | null;
+  'runs-subscribed'?: {
+    docs?: (string | Run)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   'run-clubs-member'?: (string | RunClub)[] | null;
   'run-clubs-owner'?: (string | RunClub)[] | null;
   role: 'admin' | 'organizer' | 'runner';
@@ -288,7 +296,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   username?: T;
-  runs?: T;
+  'runs-subscribed'?: T;
   'run-clubs-member'?: T;
   'run-clubs-owner'?: T;
   role?: T;

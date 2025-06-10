@@ -151,12 +151,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                     <div>
                       <p className="font-medium">Participants</p>
                       <p className="text-gray-700">
-                        {run.maxParticipants} / {run.maxParticipants} places
+                        {run.participants?.length} / {run.maxParticipants} places
                       </p>
                       <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
                         <div
                           className="bg-purple-600 h-2.5 rounded-full"
-                          style={{ width: `${(run.maxParticipants / run.maxParticipants) * 100}%` }}
+                          style={{
+                            width: `${((run.participants?.length ?? 0) / run.maxParticipants) * 100}%`,
+                          }}
                         ></div>
                       </div>
                     </div>
@@ -198,9 +200,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <Button
                 className="w-fit bg-purple-600 hover:bg-purple-700 text-lg py-6"
                 // onClick={handleRegistration}
-                disabled={run.maxParticipants === run.maxParticipants}
+                disabled={run.maxParticipants === run.participants?.length}
               >
-                {run.maxParticipants === run.maxParticipants ? 'Complet' : 'S&apos;inscrire'}
+                {run.maxParticipants === run.participants?.length ? 'Complet' : "S'inscrire"}
               </Button>
 
               {/* <Button variant="outline" className="w-full flex items-center justify-center gap-2">

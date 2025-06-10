@@ -20,7 +20,9 @@ export const typeColors = {
 }
 
 export function RunCard({ run, user }: RunCardProps) {
-  const userRuns = user?.runs?.map((run) => (typeof run === 'string' ? run : run.id))
+  const userRuns = user?.['runs-subscribed']?.docs?.map((run) =>
+    typeof run === 'string' ? run : run.id,
+  )
   const { imageUrl, imageAlt, cityName, organizerName } = getRunInfo(run)
   const runParticipantsNumber = run.participants?.length
 

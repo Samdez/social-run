@@ -23,11 +23,17 @@ export const Users: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    // {
+    //   name: 'runs',
+    //   type: 'relationship',
+    //   relationTo: 'run',
+    //   hasMany: true,
+    // },
     {
-      name: 'runs',
-      type: 'relationship',
-      relationTo: 'run',
-      hasMany: true,
+      name: 'runs-subscribed',
+      type: 'join',
+      collection: 'run',
+      on: 'participants',
     },
     {
       name: 'run-clubs-member',
