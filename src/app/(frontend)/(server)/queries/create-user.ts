@@ -14,7 +14,8 @@ export async function createUser(data: {
       data: {
         email: data.email,
         password: data.password,
-        authProviderId: data.authProviderId,
+        role: 'runner',
+        username: data.username,
       },
     })
     return user

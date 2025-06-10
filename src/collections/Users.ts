@@ -7,16 +7,21 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
-    {
-      name: 'authProviderId',
-      type: 'text',
-      required: true,
-    },
+    // {
+    //   name: 'authProviderId',
+    //   type: 'text',
+    //   required: true,
+    // },
     {
       name: 'email',
       type: 'email',
       required: true,
       unique: true,
+    },
+    {
+      name: 'username',
+      type: 'text',
+      required: true,
     },
     {
       name: 'runs',
@@ -35,6 +40,13 @@ export const Users: CollectionConfig = {
       type: 'relationship',
       relationTo: 'run-club',
       hasMany: true,
+    },
+    {
+      name: 'role',
+      type: 'select',
+      options: ['admin', 'organizer', 'runner'],
+      defaultValue: 'organizer',
+      required: true,
     },
   ],
 }

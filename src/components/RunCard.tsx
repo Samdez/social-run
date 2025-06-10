@@ -12,7 +12,7 @@ import { SubscribeToRunButton } from './SubscribeToRunButton'
 
 interface RunCardProps {
   run: Run
-  user: User
+  user: User | null
 }
 export const typeColors = {
   road: 'bg-orange-500',
@@ -20,9 +20,9 @@ export const typeColors = {
 }
 
 export function RunCard({ run, user }: RunCardProps) {
-  console.log('🚀 ~ RunCard ~ user:', user.runs)
-  const userRuns = user.runs?.map((run) => (typeof run === 'string' ? run : run.id))
+  const userRuns = user?.runs?.map((run) => (typeof run === 'string' ? run : run.id))
   const { imageUrl, imageAlt, cityName, organizerName } = getRunInfo(run)
+  const runParticipantsNumber = run.participants?.length
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -66,8 +66,7 @@ export function RunCard({ run, user }: RunCardProps) {
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
             <Users className="w-4 h-4" />
             <span>
-              {/* {event.participants} participant{event.participants > 1 ? 's' : ''} */}
-              {run.maxParticipants && ` / ${run.maxParticipants}`}
+              {runParticipantsNumber || 0} / {run.maxParticipants} inscrits
             </span>
           </div>
 
@@ -88,7 +87,7 @@ export function RunCard({ run, user }: RunCardProps) {
             Déjà inscrit
           </Button>
         ) : (
-          <SubscribeToRunButton runId={run.id} userId={user.id} />
+          <SubscribeToRunButton runId={run.id} userId={user?.id} />
         )}
       </CardFooter>
     </Card>

@@ -8,52 +8,15 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const {
     docs: [run],
   } = await getRun(id)
   const { imageUrl, imageAlt, cityName, organizerName, organizerLogo } = getRunInfo(run)
-  // const [event, setEvent] = useState<any>(null)
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [showRegistrationModal, setShowRegistrationModal] = useState(false)
-  // const router = useRouter()
-  // const { user } = useAuth()
-
-  // useEffect(() => {
-  //   // Simuler le chargement des données de l'événement
-  //   const foundEvent = mockEvents.find((e) => e.id === params.id)
-  //   if (foundEvent) {
-  //     setEvent(foundEvent)
-  //   } else {
-  //     router.push("/")
-  //   }
-  //   setIsLoading(false)
-  // }, [params.id, router])
-
-  // if (isLoading || !event) {
-  //   return (
-  //     <div className="min-h-screen bg-gray-50">
-  //       <Header />
-  //       <div className="flex justify-center items-center h-[50vh]">
-  //         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
-  // const handleRegistration = () => {
-  //   if (!user) {
-  //     router.push('/login')
-  //   } else {
-  //     setShowRegistrationModal(true)
-  //   }
-  // }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* <Header /> */}
-
       <div className="relative h-[40vh] md:h-[80vh] w-full">
         <Image
           src={imageUrl || '/placeholder.svg'}

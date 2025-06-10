@@ -1,17 +1,20 @@
 'use client'
 
-import { authClient } from '@/lib/auth-client'
 import { Button } from './ui/button'
 import { LogOut } from 'lucide-react'
+import { logout } from '@/server/users'
+import { useRouter } from 'next/navigation'
 
 interface LogoutProps {
   onLogout?: () => void
 }
 
 export function Logout({ onLogout }: LogoutProps) {
+  const router = useRouter()
+
   const handleLogout = async () => {
-    await authClient.signOut()
-    onLogout?.()
+    await logout()
+    router.push('/')
   }
   return (
     <div>

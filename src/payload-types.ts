@@ -125,10 +125,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
-  authProviderId: string;
+  username: string;
   runs?: (string | Run)[] | null;
   'run-clubs-member'?: (string | RunClub)[] | null;
   'run-clubs-owner'?: (string | RunClub)[] | null;
+  role: 'admin' | 'organizer' | 'runner';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -163,6 +164,7 @@ export interface Run {
   membersOnly?: boolean | null;
   organizer?: (string | null) | RunClub;
   price?: number | null;
+  participants?: (string | User)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -285,10 +287,11 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  authProviderId?: T;
+  username?: T;
   runs?: T;
   'run-clubs-member'?: T;
   'run-clubs-owner'?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -359,6 +362,7 @@ export interface RunSelect<T extends boolean = true> {
   membersOnly?: T;
   organizer?: T;
   price?: T;
+  participants?: T;
   updatedAt?: T;
   createdAt?: T;
 }

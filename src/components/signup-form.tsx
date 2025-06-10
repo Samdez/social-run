@@ -62,7 +62,11 @@ export function SignupForm({ className, ...props }: React.ComponentPropsWithoutR
       router.push('/')
       setIsLoading(false)
     } else {
-      toast.error(typeof message === 'string' ? message : message.error)
+      toast.error(message)
+      form.reset({
+        ...form.getValues(),
+        password: '',
+      })
       setIsLoading(false)
     }
   }

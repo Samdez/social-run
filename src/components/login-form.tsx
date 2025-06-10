@@ -2,17 +2,15 @@
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { signIn, signUp } from '@/server/users'
+import { loginPayload } from '@/server/users'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -41,13 +39,17 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true)
-    const { success, message } = await signIn(data)
+    const { success, message } = await loginPayload(data)
     if (success) {
       toast.success('Successfully logged in')
       router.push('/')
       setIsLoading(false)
     } else {
-      toast.error(typeof message === 'string' ? message : message.error)
+      toast.error(message)
+      form.reset({
+        ...form.getValues(),
+        password: '',
+      })
       setIsLoading(false)
     }
   }
@@ -97,7 +99,11 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="m@example.com" {...field} />
+                            <Input
+                              placeholder="m@example.com"
+                              {...field}
+                              suppressHydrationWarning
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -113,7 +119,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                           <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                              <Input placeholder="********" {...field} type="password" />
+                              <Input
+                                placeholder="********"
+                                {...field}
+                                type="password"
+                                suppressHydrationWarning
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

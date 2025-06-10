@@ -3,34 +3,25 @@ import { getRuns } from './(server)/queries/get-runs'
 import { getCities } from './(server)/queries/get-cities'
 import { Filters } from '@/components/Filters'
 import { Run } from '@/payload-types'
-import { auth } from '@/auth'
-import { headers } from 'next/headers'
-import { payload } from './(server)/client'
+import { getUser } from '@/server/users'
 
 async function Home({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     startDate: string
     endDate: string
     city: string
     distance: string
     type: Run['type'] | 'all'
-  }
+  }>
 }) {
   const { startDate, endDate, city, distance, type } = await searchParams
   const citySlug = city === 'all' ? null : city
   const distanceNumber = distance === 'all' ? null : Number(distance)
-  // const runs = await getRuns({
-  //   startDate: startDate ? new Date(startDate) : null,
-  //   endDate: endDate ? new Date(endDate) : null,
-  //   citySlug,
-  //   distance: distanceNumber,
-  //   type,
-  // })
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+
+  const user = await getUser()
+
   const [cities, runs] = await Promise.all([
     getCities(),
     getRuns({
@@ -40,25 +31,7 @@ async function Home({
       distance: distanceNumber,
       type,
     }),
-    payload.find({
-      collection: 'users',
-      where: {
-        authProviderId: {
-          equals: session?.user?.id,
-        },
-      },
-    }),
   ])
-  const {
-    docs: [user],
-  } = await payload.find({
-    collection: 'users',
-    where: {
-      authProviderId: {
-        equals: session?.user?.id,
-      },
-    },
-  })
 
   return (
     <div className="container mx-auto px-4">

@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { payload } from '../client'
 
 export async function subscribeToRun(runId: string, userId: string) {
@@ -10,6 +11,13 @@ export async function subscribeToRun(runId: string, userId: string) {
       runs: true,
     },
   })
+  const run = await payload.findByID({
+    collection: 'run',
+    id: runId,
+    select: {
+      participants: true,
+    },
+  })
 
   await payload.update({
     collection: 'users',
@@ -18,4 +26,14 @@ export async function subscribeToRun(runId: string, userId: string) {
       runs: [...(user.runs || []), runId],
     },
   })
+
+  await payload.update({
+    collection: 'run',
+    id: runId,
+    data: {
+      participants: [...(run.participants || []), userId],
+    },
+  })
+
+  revalidatePath('/')
 }
