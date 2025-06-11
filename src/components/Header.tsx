@@ -16,17 +16,14 @@ export function Header() {
             <Link href="/" className="text-gray-700 hover:text-purple-600 font-medium">
               TOUS LES RUNS
             </Link>
-            <Link href="/destinations" className="text-gray-700 hover:text-purple-600 font-medium">
-              DESTINATIONS
-            </Link>
-            <Link href="/themes" className="text-gray-700 hover:text-purple-600 font-medium">
-              THÈMES
-            </Link>
-            <Link href="/types" className="text-gray-700 hover:text-purple-600 font-medium">
-              TYPES DE COURSES
+            <Link href="/mes-runs" className="text-gray-700 hover:text-purple-600 font-medium">
+              MES RUNS
             </Link>
             <Link href="/blog" className="text-gray-700 hover:text-purple-600 font-medium">
               BLOG
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-purple-600 font-medium">
+              CONTACT
             </Link>
           </nav>
 

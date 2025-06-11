@@ -9,12 +9,14 @@ export async function getRuns({
   citySlug,
   distance,
   type,
+  userId,
 }: {
   startDate: Date | null
   endDate: Date | null
   citySlug: string | null
   distance: Run['distance']
   type: Run['type'] | null
+  userId: string | null
 }) {
   const endDatePlusOne = endDate && new Date(endDate.setDate(endDate.getDate() + 1))
   const events = await payload.find({
@@ -28,6 +30,7 @@ export async function getRuns({
       ...(citySlug && { ['city.slug']: { equals: citySlug } }),
       ...(distance && { distance: { less_than_equal: distance } }),
       ...(type && { type: { equals: type } }),
+      ...(userId && { participants: { contains: userId } }),
     },
   })
   return events
