@@ -7,12 +7,17 @@ import { formatDateToFR, getRunInfo } from '@/app/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getUser } from '@/server/users'
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const {
     docs: [run],
   } = await getRun(id)
+  const user = await getUser()
+  const isSubscribed = user?.['runs-subscribed']?.docs?.some((run) =>
+    typeof run === 'string' ? run : run.id === id,
+  )
   const { imageUrl, imageAlt, cityName, organizerName, organizerLogo } = getRunInfo(run)
 
   return (
@@ -200,9 +205,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <Button
                 className="w-fit bg-purple-600 hover:bg-purple-700 text-lg py-6"
                 // onClick={handleRegistration}
-                disabled={run.maxParticipants === run.participants?.length}
+                disabled={isSubscribed || run.maxParticipants === run.participants?.length}
               >
-                {run.maxParticipants === run.participants?.length ? 'Complet' : "S'inscrire"}
+                {isSubscribed
+                  ? 'Déjà inscrit'
+                  : run.maxParticipants === run.participants?.length
+                    ? 'Complet'
+                    : 'S&apos;inscrire'}
               </Button>
 
               {/* <Button variant="outline" className="w-full flex items-center justify-center gap-2">

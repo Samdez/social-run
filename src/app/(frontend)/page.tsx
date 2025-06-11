@@ -19,6 +19,7 @@ async function Home({
   const { startDate, endDate, city, distance, type } = await searchParams
   const citySlug = city === 'all' ? null : city
   const distanceNumber = distance === 'all' ? null : Number(distance)
+  const typeFilter = type === 'all' ? null : type
 
   const user = await getUser()
 
@@ -29,7 +30,7 @@ async function Home({
       endDate: endDate ? new Date(endDate) : null,
       citySlug,
       distance: distanceNumber,
-      type,
+      type: typeFilter,
     }),
   ])
 
