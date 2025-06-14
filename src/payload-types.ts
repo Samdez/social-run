@@ -163,6 +163,7 @@ export interface Run {
   image?: (string | null) | Media;
   type: 'road' | 'trail';
   date: string;
+  time: string;
   city: string | City;
   /**
    * @minItems 2
@@ -373,6 +374,7 @@ export interface RunSelect<T extends boolean = true> {
   image?: T;
   type?: T;
   date?: T;
+  time?: T;
   city?: T;
   location?: T;
   'start address'?: T;

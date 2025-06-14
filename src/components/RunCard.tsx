@@ -51,6 +51,7 @@ export function RunCard({ run, user }: RunCardProps) {
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
             <Calendar className="w-4 h-4" />
             <span>{formatDateToFR(run.date)}</span>
+            <span>{run.time}</span>
           </div>
 
           <h3 className="font-bold text-lg mb-2 line-clamp-2">{run.title}</h3>

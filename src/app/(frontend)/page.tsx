@@ -1,7 +1,7 @@
 import { RunCard } from '@/components/RunCard'
 import { getRuns } from './(server)/queries/get-runs'
 import { getCities } from './(server)/queries/get-cities'
-import { Filters } from '@/components/Filters'
+import { Filters } from '@/components/filters/Filters'
 import { Run } from '@/payload-types'
 import { getUser } from '@/app/(frontend)/(server)/queries/users'
 
@@ -40,7 +40,13 @@ async function Home({
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">TOUS LES RUNS</h1>
       </div>
 
-      <Filters cities={cities.docs} />
+      <Filters
+        cities={cities.docs}
+        cityFilter={true}
+        dateFilter={true}
+        distanceFilter={true}
+        typeFilter={true}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {runs.docs.map((run) => (

@@ -1,7 +1,7 @@
 import { RunCard } from '@/components/RunCard'
 import { getRuns } from '../(server)/queries/get-runs'
 import { getCities } from '../(server)/queries/get-cities'
-import { Filters } from '@/components/Filters'
+import { Filters } from '@/components/filters/Filters'
 import { Run } from '@/payload-types'
 import { getUser } from '@/app/(frontend)/(server)/queries/users'
 import { redirect } from 'next/navigation'

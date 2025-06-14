@@ -39,6 +39,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <div className="flex items-center gap-2 text-white">
               <Calendar className="w-5 h-5" />
               <span className="text-lg">{formatDateToFR(run.date)}</span>
+              <span className="text-lg">{run.time}</span>
             </div>
           </div>
         </div>
@@ -211,7 +212,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   ? 'Déjà inscrit'
                   : run.maxParticipants === run.participants?.length
                     ? 'Complet'
-                    : 'S&apos;inscrire'}
+                    : "S'inscrire"}
               </Button>
 
               {/* <Button variant="outline" className="w-full flex items-center justify-center gap-2">

@@ -33,6 +33,11 @@ export const Run: CollectionConfig = {
       required: true,
     },
     {
+      name: 'time',
+      type: 'text',
+      required: true,
+    },
+    {
       name: 'city',
       type: 'relationship',
       relationTo: 'city',

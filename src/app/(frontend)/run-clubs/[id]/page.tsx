@@ -17,7 +17,7 @@ import {
   MessageCircle,
 } from 'lucide-react'
 import { getRunClub } from '../../(server)/queries/get-run-club'
-import { getClubInfo } from '@/app/utils'
+import { formatDateToFR, getClubInfo } from '@/app/utils'
 import { getUser } from '../../(server)/queries/users'
 import { RunCard } from '@/components/RunCard'
 import { getRun } from '../../(server)/queries/get-run'
@@ -319,11 +319,15 @@ export default async function ClubDetailPage({ params }: { params: Promise<{ id:
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Événements passés</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {pastEvents.map((event: any) => (
+                      {pastEventsInflated.map((event) => (
                         <Card key={event.id} className="overflow-hidden">
                           <div className="relative h-32">
                             <Image
-                              src={event.image || '/placeholder.svg'}
+                              src={
+                                typeof event.image === 'string'
+                                  ? event.image
+                                  : event.image?.url || '/placeholder.svg'
+                              }
                               alt={event.title}
                               fill
                               className="object-cover"
@@ -331,10 +335,12 @@ export default async function ClubDetailPage({ params }: { params: Promise<{ id:
                           </div>
                           <CardContent className="p-4">
                             <h3 className="font-medium mb-1">{event.title}</h3>
-                            <p className="text-sm text-gray-500 mb-2">{event.date}</p>
+                            <p className="text-sm text-gray-500 mb-2">
+                              {formatDateToFR(event.date)}
+                            </p>
                             <div className="flex items-center gap-1 text-sm text-gray-600">
                               <Users className="w-4 h-4" />
-                              <span>{event.participants} participants</span>
+                              <span>{event.participants?.length ?? 0} participants</span>
                             </div>
                           </CardContent>
                         </Card>
