@@ -11,12 +11,12 @@ export async function getRuns({
   type,
   userId,
 }: {
-  startDate: Date | null
-  endDate: Date | null
-  citySlug: string | null
-  distance: Run['distance']
-  type: Run['type'] | null
-  userId: string | null
+  startDate?: Date | null
+  endDate?: Date | null
+  citySlug?: string | null
+  distance?: Run['distance']
+  type?: Run['type'] | null
+  userId?: string | null
 }) {
   const endDatePlusOne = endDate && new Date(endDate.setDate(endDate.getDate() + 1))
   const events = await payload.find({

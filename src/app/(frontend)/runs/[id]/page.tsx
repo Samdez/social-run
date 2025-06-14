@@ -7,7 +7,7 @@ import { formatDateToFR, getRunInfo } from '@/app/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { getUser } from '@/server/users'
+import { getUser } from '@/app/(frontend)/(server)/queries/users'
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

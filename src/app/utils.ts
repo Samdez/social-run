@@ -1,4 +1,4 @@
-import { Run } from '@/payload-types'
+import { Run, RunClub } from '@/payload-types'
 import slugify from 'slugify'
 
 export function slugifyString(string: string) {
@@ -18,6 +18,37 @@ export function getRunInfo(run: Run) {
         ? run.organizer.image
         : run.organizer?.image?.url
   return { imageUrl, imageAlt, cityName, organizerName, organizerLogo }
+}
+
+export function getClubInfo(club: RunClub) {
+  const imageUrl = typeof club.image === 'string' ? club.image : club.image?.url
+  const imageAlt = typeof club.image === 'string' ? club.image : club.image?.alt
+  const name = club.name
+  const description = club.description
+  const cityName = typeof club.city === 'string' ? club.city : club.city?.name
+  const members = club.members?.length || 0
+  const events = club.events?.docs
+  if (typeof events === 'object' && events !== null) {
+    const upcomingEvents = events.filter(
+      (event): event is Run =>
+        typeof event !== 'string' && 'date' in event && new Date(event.date) > new Date(),
+    )
+    const pastEvents = events.filter(
+      (event): event is Run =>
+        typeof event !== 'string' && 'date' in event && new Date(event.date) < new Date(),
+    )
+    return { imageUrl, imageAlt, name, description, cityName, members, upcomingEvents, pastEvents }
+  }
+  return {
+    imageUrl,
+    imageAlt,
+    name,
+    description,
+    cityName,
+    members,
+    upcomingEvents: [],
+    pastEvents: [],
+  }
 }
 
 export function formatDateToFR(date: string) {

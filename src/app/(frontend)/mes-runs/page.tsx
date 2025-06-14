@@ -3,7 +3,8 @@ import { getRuns } from '../(server)/queries/get-runs'
 import { getCities } from '../(server)/queries/get-cities'
 import { Filters } from '@/components/Filters'
 import { Run } from '@/payload-types'
-import { getUser } from '@/server/users'
+import { getUser } from '@/app/(frontend)/(server)/queries/users'
+import { redirect } from 'next/navigation'
 
 async function Home({
   searchParams,
@@ -22,6 +23,10 @@ async function Home({
   const typeFilter = type === 'all' ? null : type
 
   const user = await getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
 
   const [cities, runs] = await Promise.all([
     getCities(),

@@ -19,8 +19,8 @@ export function Header() {
             <Link href="/mes-runs" className="text-gray-700 hover:text-purple-600 font-medium">
               MES RUNS
             </Link>
-            <Link href="/blog" className="text-gray-700 hover:text-purple-600 font-medium">
-              BLOG
+            <Link href="/run-clubs" className="text-gray-700 hover:text-purple-600 font-medium">
+              CLUBS
             </Link>
             <Link href="/contact" className="text-gray-700 hover:text-purple-600 font-medium">
               CONTACT

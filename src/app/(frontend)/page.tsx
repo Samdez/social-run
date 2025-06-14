@@ -3,7 +3,7 @@ import { getRuns } from './(server)/queries/get-runs'
 import { getCities } from './(server)/queries/get-cities'
 import { Filters } from '@/components/Filters'
 import { Run } from '@/payload-types'
-import { getUser } from '@/server/users'
+import { getUser } from '@/app/(frontend)/(server)/queries/users'
 
 async function Home({
   searchParams,

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { signUp } from '@/server/users'
+import { signUp } from '@/app/(frontend)/(server)/queries/users'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -52,12 +52,6 @@ export function SignupForm({ className, ...props }: React.ComponentPropsWithoutR
     setIsLoading(true)
     const { success, message, data: user } = await signUp(data)
     if (success && user) {
-      await createUser({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        authProviderId: user.id,
-      })
       toast.success('Successfully logged in')
       router.push('/')
       setIsLoading(false)

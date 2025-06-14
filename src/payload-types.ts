@@ -80,6 +80,9 @@ export interface Config {
     users: {
       'runs-subscribed': 'run';
     };
+    'run-club': {
+      events: 'run';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -218,6 +221,12 @@ export interface RunClub {
   description?: string | null;
   image?: (string | null) | Media;
   city: string | City;
+  members?: (string | User)[] | null;
+  events?: {
+    docs?: (string | Run)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -349,6 +358,8 @@ export interface RunClubSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   city?: T;
+  members?: T;
+  events?: T;
   updatedAt?: T;
   createdAt?: T;
 }

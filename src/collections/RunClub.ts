@@ -24,5 +24,17 @@ export const RunClub: CollectionConfig = {
       relationTo: 'city',
       required: true,
     },
+    {
+      name: 'members',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+    },
+    {
+      name: 'events',
+      type: 'join',
+      collection: 'run',
+      on: 'organizer',
+    },
   ],
 }

@@ -3,7 +3,7 @@
 import { Button } from './ui/button'
 import { Logout } from './logout'
 import Link from 'next/link'
-import { getUser } from '@/server/users'
+import { getUser } from '@/app/(frontend)/(server)/queries/users'
 
 export default async function LoginButton() {
   // const { data: session, isPending, refetch } = authClient.useSession()
